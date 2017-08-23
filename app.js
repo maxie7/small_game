@@ -13,19 +13,12 @@ new Vue({
         },
         attack: function() {
             this.monsterHealth -= this.calculateDamage(3, 10);
-
-            if (this.monsterHealth <= 0) {
-                alert('You won!');
-                this.gameIsRunning = false;
+            if (this.checkWin()) {
                 return;
             }
 
             this.playerHealth -= this.calculateDamage(5, 12);
-
-            if (this.playerHealth <= 0) {
-                alert('You lost!');
-                this.gameIsRunning = false;
-            }
+            this.checkWin();
         },
         specialAttack: function() {
 
@@ -46,8 +39,16 @@ new Vue({
                 } else {
                     this.gameIsRunning = false;
                 }
-                return;
+                return true;
+            } else if (this.playerHealth <= 0) {
+                if (confirm('You lost! New Game?')) {
+                    this.startGame();
+                } else {
+                    this.gameIsRunning = false;
+                }
+                return true;
             }
+            return false;
         }
     }
 });
